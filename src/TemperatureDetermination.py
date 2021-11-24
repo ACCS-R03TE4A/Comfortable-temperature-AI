@@ -10,11 +10,12 @@ class TemperatureDetermination:
 
     def __init__(self,input_temperature,input_temperature_sense):
         try:
-            if((input_temperature < 5) | (input_temperature > 50)):
+            if((input_temperature < 5) | (input_temperature > 50)): #最低温度は要件定義に従う
                 raise ValueError()
             self.input_temperature = float(input_temperature)
             self.input_temperature_sense = str(input_temperature_sense)
         except ValueError:
+            #範囲外の温度が入力された場合デフォルト値の25.0になる
             self.input_temperature = 25.0
             print("Temperature is out of range.")
 
@@ -24,5 +25,6 @@ class TemperatureDetermination:
             output = self.input_temperature + self.SENS_CATEGORY[self.input_temperature_sense]
             return output
         except KeyError:
+            #範囲外の温度感覚が入力された場合デフォルト値の３になる
             self.input_temperature_sense = "3"
             print("No such temperature sense.")
