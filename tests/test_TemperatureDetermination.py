@@ -30,3 +30,7 @@ def test_decision_base():
     td5.decision_base()
     assert td5.decision_base() == 15.0
 
+def test_decision_base_NG():
+    td5 = TemperatureDetermination(100.0,10)
+    td5.decision_base()
+    assert td5.decision_base() == 25.0

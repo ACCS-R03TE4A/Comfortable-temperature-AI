@@ -6,7 +6,6 @@ class TemperatureDetermination:
     '''
     input_temperature = 25.0  #入力温度
     input_temperature_sense = "3"   #入力温度感覚（1~5の値）
-    output_temperature = 25.0 #出力温度
     SENS_CATEGORY = {"1":-5.0, "2":-3.0, "3":0.0, "4":2.0, "5":5.0} #温度感覚カテゴリ
 
     def __init__(self,input_temperature,input_temperature_sense):
