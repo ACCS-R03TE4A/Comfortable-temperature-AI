@@ -19,13 +19,11 @@ def test_init_temperature_NG_upper():
 def test_init_sense():
     #入力温度感覚正常パターン
     td3 = TemperatureDetermination(25.0,1)
-    td3.decision_base()
     assert td3.input_temperature_sense == "1"
 
 def test_init_sense_NG():
     #入力温度感覚が範囲外
     td4 = TemperatureDetermination(25.0,10)
-    td4.decision_base()
     assert td4.input_temperature_sense == "3"
 
 def test_decision_base():
