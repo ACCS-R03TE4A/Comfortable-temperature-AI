@@ -5,9 +5,9 @@ class TemperatureDetermination:
     ACCS-SERVERより外部気温が入力される。
     '''
     input_temperature = 25.0  #入力温度
-    input_temperature_sense = "3"   #入力温度感覚（1~5の値）
+    input_temperature_sense = "2"   #入力温度感覚（0~4の値）
     d_temperature = 0.0 #SENS_CATEGORY[input_temperature_sense]
-    SENS_CATEGORY = {"1":-5.0, "2":-3.0, "3":0.0, "4":2.0, "5":5.0} #温度感覚カテゴリ
+    SENS_CATEGORY = {"0":-5.0, "1":-3.0, "2":0.0, "3":3.0, "4":5.0} #温度感覚カテゴリ
 
     def __init__(self,input_temperature,input_temperature_sense):
         try:
@@ -21,7 +21,7 @@ class TemperatureDetermination:
             self.input_temperature = 25.0
             print("Temperature is out of range.")
         except KeyError:
-            self.input_temperature_sense = "3"
+            self.input_temperature_sense = "2"
             print("No such temperature sense.")
 
                
