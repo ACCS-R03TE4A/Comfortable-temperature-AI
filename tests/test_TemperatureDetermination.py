@@ -1,6 +1,14 @@
 from src.TemperatureDetermination import TemperatureDetermination
 import pytest
 
+@pytest.fixture(scope = 'module', autouse=True)
+def scope_module():
+    print()
+    print(f"-----------------{__name__}のテスト-----------------")
+    yield
+    print(f"--------------------------------------------------------")
+    print()
+
 def test_init_temperature():
     #初期化正常パターン
     td = TemperatureDetermination(20.0,1)
