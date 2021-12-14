@@ -11,7 +11,7 @@ class TemperatureDetermination:
 
     def __init__(self,input_temperature,input_temperature_sense):
         try:
-            if((input_temperature < 5) | (input_temperature > 50)): #最低温度は要件定義に従う
+            if((input_temperature < -20) | (input_temperature > 60)): #最低温度は要件定義に従う
                 raise ValueError()
             self.input_temperature = float(input_temperature)
             self.input_temperature_sense = str(input_temperature_sense)
