@@ -1,0 +1,9 @@
+from mongoengine import connect, Document, StringField, DateTimeField, IntField, FloatField
+
+class Temperature(Document):
+    time = DateTimeField(required=True)
+    temperatureCategory = IntField(required=True)
+    Temperature = FloatField(required=True)
+
+    def __str__(self):
+        return f"time:{self.time}, temperatureCategory:{self.temperatureCategory}, Temperature:{self.Temperature}"
