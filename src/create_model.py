@@ -2,6 +2,8 @@ import pandas as pd
 from sklearn.linear_model import LinearRegression as LR
 from sklearn.model_selection import train_test_split
 import pickle
+from .db.get_temperature import get_temp
+
 def create_model():
     #データの読み込みは未定
     data = pd.read_csv('temp2.csv')
