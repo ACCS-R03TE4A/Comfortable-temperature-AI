@@ -30,8 +30,7 @@ class TemperatureDetermination:
         except KeyError:
             self.input_temperature_sense = "2"
             logger.info("No such temperature sense.")
-
-               
+            
     def decision_base(self):
         output = self.input_temperature + self.d_temperature
         return output
