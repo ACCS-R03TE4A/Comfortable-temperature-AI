@@ -12,4 +12,4 @@ def create_model():
     #モデルをファイルに書き出す
     filename = 'model.sav'
     pickle.dump(model, open(filename, 'wb'))
-    print("saved model") 
+    logger.info("saved model") 

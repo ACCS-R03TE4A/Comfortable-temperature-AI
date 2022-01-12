@@ -1,3 +1,10 @@
+import json
+
+from logging import getLogger, config
+logger = getLogger(__name__)
+with open("log_config.json", "r") as f:
+    config.dictConfig(json.load(f))
+
 class TemperatureDetermination:
     '''
     入力温度感覚、温度感覚カテゴリはAI実装後は削除する。
@@ -19,10 +26,10 @@ class TemperatureDetermination:
         except ValueError:
             #範囲外の温度が入力された場合デフォルト値の25.0になる
             self.input_temperature = 25.0
-            print("Temperature is out of range.")
+            logger.info("Temperature is out of range.")
         except KeyError:
             self.input_temperature_sense = "2"
-            print("No such temperature sense.")
+            logger.info("No such temperature sense.")
 
                
     def decision_base(self):
