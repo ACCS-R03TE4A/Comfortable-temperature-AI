@@ -7,4 +7,4 @@ class Temperature(Document):
     Temperature = FloatField(required=True)
 
     def __str__(self):
-        return f"{self.Temperature}"
+        return f"time={self.time}, temperatureCategory={self.temperatureCategory}, Temperature={self.Temperature}"
