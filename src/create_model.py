@@ -6,7 +6,7 @@ import json
 
 from logging import getLogger, config
 logger = getLogger(__name__)
-with open("log_config.json", "r") as f:
+with open("../log_config.json", "r") as f:
     config.dictConfig(json.load(f))
 
 
