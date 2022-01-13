@@ -2,6 +2,7 @@ import time
 import sys
 import db
 from temperature import Temperature
+import traceback
 
 def get_temp():
     try:
@@ -10,7 +11,12 @@ def get_temp():
         InsideTemp = Temperature.objects(temperatureCategory=1).order_by("-time").first()
         OutsideTemp = Temperature.objects(temperatureCategory=2).order_by("-time").first()
         #各の温度をリストにして返す
-        temp_list = [tActual,InsideTemp,OutsideTemp]
+        temp_list = {
+            "tActual":tActual,
+            "InsideTemp":InsideTemp,
+            "OutsideTemp":OutsideTemp
+            }
+
         return temp_list
     except Exception as error:
-        print(error, file=sys.stderr)
+        traceback.print_exc()
