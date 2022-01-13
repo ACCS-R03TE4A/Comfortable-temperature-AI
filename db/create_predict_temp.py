@@ -1,7 +1,7 @@
 import time
 import sys
-import db
-from temperature import Temperature
+# import Comfortable_temperature_AI.db.db
+from Comfortable_temperature_AI.db.temperature import Temperature
 import traceback
 
 def get_temp():

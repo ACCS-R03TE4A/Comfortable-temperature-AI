@@ -3,7 +3,8 @@ import pickle
 import pandas as pd
 from sklearn.linear_model import LinearRegression as LR
 from sklearn.model_selection import train_test_split
-from db.create_predict_temp import get_temp
+from Comfortable_temperature_AI.db.create_predict_temp import get_temp
+from Comfortable_temperature_AI.db.create_csv import TensorGenerater
 import math
 
 from logging import getLogger, config
@@ -22,13 +23,17 @@ class ComfortTemperaturePredictionAI:
 
     def __init__(self):
         #モデルのファイルを読み込む
-        self.model = pickle.load(open('model.sav', 'rb'))
+        try:
+            self.model = pickle.load(open('model.sav', 'rb'))
+        except FileNotFoundError:
+            self.create_model()
 
     def getTargetTemperature(self, input_temperature_sense):
         d_temperature = None
         latest_temp = get_temp()
+        print(latest_temp)
         try:
-            if((latest_temp["tActual"] < -20) | (latest_temp["tActual"] > 60)): #最低温度は要件定義に従う
+            if((latest_temp["tActual"].Temperature < -20) | (latest_temp["tActual"].Temperature > 60)): #最低温度は要件定義に従う
                 raise ValueError()
             d_temperature = self.SENS_CATEGORY[input_temperature_sense]
         except ValueError:
@@ -40,20 +45,25 @@ class ComfortTemperaturePredictionAI:
             logger.info("No such temperature sense.")
         input_temperature_sense = str(input_temperature_sense)
         predicated = self.predict(latest_temp)
-        if(math.abs(predicated - latest_temp["tActual"]) >= 3):
+        if(abs(predicated - latest_temp["tActual"].Temperature) >= 3):
             output = predicated
         else:
-            output = latest_temp["tActual"] + d_temperature
+            output = latest_temp["tActual"].Temperature + d_temperature
         return output
     
     def predict(self, temps):
-        result = self.model.predict(pd.DataFrame([[ temps["tActual"], temps["InsideTemp"],temps["OutsideTemp"]]]))
+        result = self.model.predict(pd.DataFrame([[ temps["tActual"].Temperature, temps["InsideTemp"].Temperature,temps["OutsideTemp"].Temperature]]))
         logger.info(result)
         return result
     
     def create_model(self):
         #データの読み込みは未定
-        data = pd.read_csv('../input/temp2.csv')
+        try:
+            data = pd.read_csv('Learn.csv')
+        except FileNotFoundError:
+            tg = TensorGenerater()
+            data = tg.generate()
+        print(data)
         model = LR(fit_intercept = True, normalize = False, copy_X = True, n_jobs = 1)
         X, Y = data.loc[:,['tActual','tInside','tOutside']].values , data['tSuitable'].values
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3, random_state=20)
