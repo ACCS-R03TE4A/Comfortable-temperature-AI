@@ -27,6 +27,13 @@ class ComfortTemperaturePredictionAI:
             self.model = pickle.load(open('model.sav', 'rb'))
         except FileNotFoundError:
             self.create_model()
+    
+    #快適温度との温度差を算出するメソッド
+    @staticmethod
+    def get_tempDiff(x, y):
+        diff = abs(x-y)
+        return diff
+
 
     def getTargetTemperature(self, input_temperature_sense):
         d_temperature = None
@@ -45,11 +52,18 @@ class ComfortTemperaturePredictionAI:
             logger.info("No such temperature sense.")
         input_temperature_sense = str(input_temperature_sense)
         predicated = self.predict(latest_temp)
-        if(abs(predicated - latest_temp["tActual"].Temperature) >= 3):
+
+        if(self.get_tempDiff(predicated, latest_temp["tActual"].Temperature) >= 3):
             output = predicated
         else:
             output = latest_temp["tActual"].Temperature + d_temperature
         return output
+
+        # if(abs(predicated - latest_temp["tActual"].Temperature) >= 3):
+        #     output = predicated
+        # else:
+        #     output = latest_temp["tActual"].Temperature + d_temperature
+        # return output
     
     def predict(self, temps):
         result = self.model.predict(pd.DataFrame([[ temps["tActual"].Temperature, temps["InsideTemp"].Temperature,temps["OutsideTemp"].Temperature]]))
