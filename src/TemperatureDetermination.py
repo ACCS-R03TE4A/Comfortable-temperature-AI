@@ -51,19 +51,19 @@ class ComfortTemperaturePredictionAI:
             d_temperature = 0
             logger.info("No such temperature sense.")
         input_temperature_sense = str(input_temperature_sense)
-        predicated = self.predict(latest_temp)
-
-        if(self.get_tempDiff(predicated, latest_temp["tActual"].Temperature) >= 3):
-            output = predicated
+        predicated = self.predict(latest_temp)[0]
+        
+        print(self.get_tempDiff(predicated, latest_temp["tActual"].Temperature))
+        print("predicated : ",predicated)
+        print("latest_temp : ",latest_temp["tActual"].Temperature)
+        ##########################
+        if latest_temp["tTarget"] == None or self.get_tempDiff(latest_temp["tTarget"].Temperature, latest_temp["tActual"].Temperature) >= 3:
+                output = predicated
         else:
             output = latest_temp["tActual"].Temperature + d_temperature
+
         return output
 
-        # if(abs(predicated - latest_temp["tActual"].Temperature) >= 3):
-        #     output = predicated
-        # else:
-        #     output = latest_temp["tActual"].Temperature + d_temperature
-        # return output
     
     def predict(self, temps):
         result = self.model.predict(pd.DataFrame([[ temps["tActual"].Temperature, temps["InsideTemp"].Temperature,temps["OutsideTemp"].Temperature]]))

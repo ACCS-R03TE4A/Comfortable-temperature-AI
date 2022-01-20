@@ -10,11 +10,15 @@ def get_temp():
         tActual = Temperature.objects(temperatureCategory=0).order_by("-time").first()
         InsideTemp = Temperature.objects(temperatureCategory=1).order_by("-time").first()
         OutsideTemp = Temperature.objects(temperatureCategory=2).order_by("-time").first()
+        tSuitable = Temperature.objects(temperatureCategory=3).order_by("-time").first()
+        tTarget = Temperature.objects(temperatureCategory=4).order_by("-time").first()
         #各の温度をリストにして返す
         temp_list = {
             "tActual":tActual,
             "InsideTemp":InsideTemp,
-            "OutsideTemp":OutsideTemp
+            "OutsideTemp":OutsideTemp,
+            "tSuitable":tSuitable,
+            "tTarget":tTarget
             }
 
         return temp_list
