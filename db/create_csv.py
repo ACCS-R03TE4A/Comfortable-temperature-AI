@@ -1,9 +1,20 @@
 import csv
+import logging
 # import  Comfortable_temperature_AI.db.db
 from Comfortable_temperature_AI.db.temperature import Temperature
+try:
+    Comfortable_temperature_AI.db.db
+except NameError:
+    import Comfortable_temperature_AI.db.db
 from datetime import datetime, timedelta, date
 import numpy as np
 import pandas as pd
+import json
+from logging import getLogger, config, basicConfig, DEBUG
+logger = getLogger(__name__)
+with open("log_config.json", "r") as f:
+    config.dictConfig(json.load(f))
+basicConfig(level=DEBUG)
 
 class TensorGenerater:
 
@@ -55,6 +66,7 @@ class TensorGenerater:
         return ave_data_list
     
     def generate(self):
+        logger.debug(f"学習に使用する温度データ行数:{len(self.seq)}")
         for d in self.seq:
             self.sorting(d)
         df = pd.DataFrame(

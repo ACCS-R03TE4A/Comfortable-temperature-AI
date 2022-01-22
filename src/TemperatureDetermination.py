@@ -7,10 +7,11 @@ from Comfortable_temperature_AI.db.create_predict_temp import get_temp
 from Comfortable_temperature_AI.db.create_csv import TensorGenerater
 import math
 
-from logging import getLogger, config
+from logging import getLogger, config, basicConfig, DEBUG
 logger = getLogger(__name__)
 with open("log_config.json", "r") as f:
     config.dictConfig(json.load(f))
+basicConfig(level=DEBUG)
 
 class ComfortTemperaturePredictionAI:
     '''
@@ -77,13 +78,16 @@ class ComfortTemperaturePredictionAI:
         except FileNotFoundError:
             tg = TensorGenerater()
             data = tg.generate()
-        print(data)
-        model = LR(fit_intercept = True, normalize = False, copy_X = True, n_jobs = 1)
-        X, Y = data.loc[:,['tActual','tInside','tOutside']].values , data['tSuitable'].values
-        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3, random_state=20)
-        model.fit(X_train, Y_train)
-        #モデルをファイルに書き出す
-        filename = 'model.sav'
-        pickle.dump(model, open(filename, 'wb'))
-        logger.info("saved model")
-        self.model = model
+        data = data.dropna(how="any")
+        if len(data) > 0:
+            model = LR(fit_intercept = True, normalize = False, copy_X = True, n_jobs = 1)
+            X, Y = data.loc[:,['tActual','tInside','tOutside']].values , data['tSuitable'].values
+            X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3, random_state=20)
+            model.fit(X_train, Y_train)
+            #モデルをファイルに書き出す
+            filename = 'model.sav'
+            pickle.dump(model, open(filename, 'wb'))
+            logger.info("saved model")
+            self.model = model
+        else:
+            logger.info("学習データが0行のため学習は行いません。")
