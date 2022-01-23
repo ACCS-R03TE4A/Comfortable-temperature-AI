@@ -2,14 +2,11 @@ import csv
 import logging
 # import  Comfortable_temperature_AI.db.db
 from Comfortable_temperature_AI.db.temperature import Temperature
-try:
-    Comfortable_temperature_AI.db.db
-except NameError:
-    import Comfortable_temperature_AI.db.db
 from datetime import datetime, timedelta, date
 import numpy as np
 import pandas as pd
 import json
+import mongoengine
 from logging import getLogger, config, basicConfig, DEBUG
 logger = getLogger(__name__)
 with open("log_config.json", "r") as f:
@@ -23,7 +20,13 @@ class TensorGenerater:
         self.today = date.today()
         self.range_end = datetime(year=self.today.year, month=self.today.month, day=self.today.day)
         self.range_start = self.range_end - timedelta(days=7)
-        self.seq = Temperature.objects(time__gt=self.range_start).all()
+        try:
+            self.seq = Temperature.objects(time__gt=self.range_start).all()
+        except mongoengine.connection.ConnectionFailure:
+            try:
+                Comfortable_temperature_AI.db.db
+            except NameError:
+                import Comfortable_temperature_AI.db.db
 
         #リストとデータフレームの初期化
         self.df = None
