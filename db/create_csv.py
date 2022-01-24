@@ -27,6 +27,7 @@ class TensorGenerater:
                 Comfortable_temperature_AI.db.db
             except NameError:
                 import Comfortable_temperature_AI.db.db
+            self.seq = Temperature.objects(time__gt=self.range_start).all()
 
         #リストとデータフレームの初期化
         self.df = None
